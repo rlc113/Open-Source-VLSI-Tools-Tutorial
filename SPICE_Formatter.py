@@ -17,17 +17,17 @@ def smart_input_number(prompt):
         except ValueError:
             print("Your response was not a decimal number. Please enter a postive decimal number: ", end = "")
 
-unmodified_sim_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/CDC_PEX_1_Test.cir"
-modified_sim_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/out.txt"
-SPICE_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/CDC.spice"
-verilog_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/Synthesized.v"
+unmodified_sim_file = "C:/Ryan/Courses/ECE 1898/CDC_PEX_1_Test.cir"
+modified_sim_file = "C:/Ryan/Courses/ECE 1898/out.txt"
+SPICE_file = "C:/Ryan/Courses/ECE 1898/counter.spice"
+verilog_file = "C:/Ryan/Courses/ECE 1898/6_final.v"
 
-design_name = "CDC"
+design_name = "counter"
 
 usf = open(unmodified_sim_file, "r")
 spf = open(SPICE_file, "r")
-msf = open(modified_sim_file, "w")
 vf = open(verilog_file, "r")
+msf = open(modified_sim_file, "w")
 
 usf_lines = usf.readlines()
 spf_lines = spf.readlines()
@@ -45,14 +45,6 @@ for i in range(len(spf_lines)):
         ports += spf_lines[i].strip().split(" ")[1:]
     else:
         plus_streak = False
-
-#Now clean the ports of potential new lines
-#for i in range(len(ports)): ports[i] = ports[i].strip()
-
-#Let's override it for now to represent our SPICE file w/ proper ports
-ports = ['Reset', 'D_SUB1[0]', 'D_SUB1[1]', 'D_SUB1[2]', 'D_SUB1[3]', 'D_SUB1[4]',
-         'D_SUB2[0]', 'D_SUB2[1]', 'D_SUB2[2]', 'D_SUB2[3]', 'D_SUB2[4]',
-         'D_MAIN[0]', 'D_MAIN[1]', 'D_MAIN[2]', 'D_MAIN[3]', 'D_MAIN[4]', 'Conversion_Finished', 'VDD', 'VSS']
 
 #Next, we need to figure out whether the ports are input or output ports
 input_ports = []
@@ -103,12 +95,18 @@ if has_clock:
         print("Please select another signal: ", end = "")
         clock = input()
 
+    #Remove the clock
+    input_ports.remove(clock)
+
     print("Please enter the name of your reset signal: ", end = "")
     reset = input()
     while reset not in input_ports:
         print("Signal not found. The available input ports are as follows: " + str(input_ports))
         print("Please select another signal: ", end = "")
         reset = input()
+
+    #Remove the reset
+    input_ports.remove(reset)
 
     reset_high = smart_input("Please enter whether your reset is active high or not (Y/N): ")
     reset_high = (reset_high == 'Y')
@@ -149,10 +147,21 @@ for i in range(len(usf_lines)):
 
         #After the above is placed (if necessary), then we shall do the rest of the inputs by prompting the user for each of them
         for p in input_ports:
-            if p != clock and p!= reset:
-                custom_input = smart_input('Please enter whether the input "' + p + '" should be statically set to a specific value for the duration of the simulation, or whether it should be set to a custom signal (Static/Custom): ', responses = ['STATIC', 'CUSTOM'])
-                if (custom_input == "STATIC"):
-                    usf_lines[i] += "V" + str(Current_V) + " " + p + " 0 DC 1.8V\n"
+            custom_input = smart_input('Please enter whether the input "' + p + '" should be statically set to a specific value for the duration of the simulation, or whether it should be set to a custom signal (Static/Custom): ', responses = ['STATIC', 'CUSTOM'])
+
+            if (custom_input == "STATIC"):
+                #If we get here, we need to know whether the user wants a '0' or a '1'
+                x = smart_input('Please enter whether the input "' + p + '" should be set to 0 or 1 (0/1): ', responses = ['0', '1'])
+                if (x == '1'): usf_lines[i] += "V" + str(Current_V) + " " + p + " 0 DC 1.8V\n"
+                else: usf_lines[i] += "V" + str(Current_V) + " " + p + " 0 DC 0V\n"
+
+            else:
+                #If we get here, the user will wish to have a custom desired input:
+                x = input('Please enter what custom voltage the input "' + p + '" should be set to: ')
+                usf_lines[i] += "V" + str(Current_V) + " " + p + " 0 DC " + x + "\n"
+
+            Current_V += 1
+
 
     msf_lines.append(usf_lines[i])
 
