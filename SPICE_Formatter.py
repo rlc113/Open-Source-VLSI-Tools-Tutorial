@@ -17,10 +17,21 @@ def smart_input_number(prompt):
         except ValueError:
             print("Your response was not a decimal number. Please enter a postive decimal number: ", end = "")
 
-unmodified_sim_file = "C:/Ryan/Courses/ECE 1898/CDC_PEX_1_Test.cir"
-modified_sim_file = "C:/Ryan/Courses/ECE 1898/out.txt"
-SPICE_file = "C:/Ryan/Courses/ECE 1898/counter.spice"
-verilog_file = "C:/Ryan/Courses/ECE 1898/6_final.v"
+def smart_intput_number(prompt):
+    print(prompt, end = "")
+    while True:
+        x = input()
+        try:
+            x = int(x)
+            if (x >= 0): return x
+            print("Please enter a positive integer: ", end = "")
+        except ValueError:
+            print("Your response was not an integer number. Please enter a postive integer number: ", end = "")
+
+unmodified_sim_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/CDC_PEX_1_Test.cir"
+modified_sim_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/out.txt"
+SPICE_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/counter.spice"
+verilog_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/6_final.v"
 
 design_name = "counter"
 
@@ -115,6 +126,8 @@ if has_clock:
 input_ports.append("Enable")
 input_ports.append("Double")
 
+sim_time = 0
+
 #Now we are ready to start writing to our simulation file
 for i in range(len(usf_lines)):
     #This code changes our include directive to reference the correct design file
@@ -162,6 +175,38 @@ for i in range(len(usf_lines)):
 
             Current_V += 1
 
+
+    #This code changes the simulation time and precision
+    if ".tran" in usf_lines[i]:
+        sim_time = smart_input_number('Please enter the simulation time in nanoseconds: ')
+        y = smart_input_number('Please enter the precision in picoseconds: ')
+        usf_lines[i] = ".tran " + str(y) + "ps " + str(sim_time) + "ns uic\n"
+
+
+    #This code makes sure that the power is measured properly
+    if "meas tran AVG_POWER" in usf_lines[i]:
+        usf_lines[i] = "    meas tran AVG_POWER AVG LOW_POWER_VECTOR from=1ns to=" + str(sim_time - 1) + "ns\n"
+
+    #Finally, we will ask the user to plot some variables
+    if "plot" in usf_lines[i]:
+        num_vars = smart_intput_number('Please enter the number of output signals that you wish to plot: ')
+        while num_vars > len(output_ports): num_vars = smart_intput_number('The total number of output signals is ' + str(len(output_ports)) + '. Please enter a lower number: ')
+
+        plotted_ports = []
+        for i in range(num_vars):
+            print("Please enter signal " + str(i) + " that you wish to plot: ", end = "")
+            x = input()
+            
+            while x not in output_ports:
+                print("The previous entry was not found in the list of remaining output ports, shown below:")
+                print(output_ports)
+                print("Please enter another signal: ", end = "")
+                x = input()
+            
+            plotted_ports.append(x)
+
+        usf_lines[i] = "    plot " + " ".join(plotted_ports) + "\n"
+            
 
     msf_lines.append(usf_lines[i])
 
