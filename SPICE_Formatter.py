@@ -28,12 +28,12 @@ def smart_intput_number(prompt):
         except ValueError:
             print("Your response was not an integer number. Please enter a postive integer number: ", end = "")
 
-unmodified_sim_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/CDC_PEX_1_Test.cir"
-modified_sim_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/out.txt"
-SPICE_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/counter.spice"
-verilog_file = "C:/Ryan/Courses/S2024/ECE 1898/SPICE Formatter/6_final.v"
+unmodified_sim_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/CDC_PEX_1_Test.cir"
+modified_sim_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/out.cir"
+SPICE_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/design_flatten.spice"
+verilog_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/6_final.v"
 
-design_name = "counter"
+design_name = "design_flatten"
 
 usf = open(unmodified_sim_file, "r")
 spf = open(SPICE_file, "r")
@@ -56,6 +56,8 @@ for i in range(len(spf_lines)):
         ports += spf_lines[i].strip().split(" ")[1:]
     else:
         plus_streak = False
+
+print(ports)
 
 #Next, we need to figure out whether the ports are input or output ports
 input_ports = []
@@ -121,10 +123,6 @@ if has_clock:
 
     reset_high = smart_input("Please enter whether your reset is active high or not (Y/N): ")
     reset_high = (reset_high == 'Y')
-
-#Temp input stuff
-input_ports.append("Enable")
-input_ports.append("Double")
 
 sim_time = 0
 
