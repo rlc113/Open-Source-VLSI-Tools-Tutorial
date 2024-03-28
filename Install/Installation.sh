@@ -1,7 +1,7 @@
 #Install needed packages first
 sudo apt install -y git python3 ngspice tk-dev libcairo2-dev mesa-common-dev
 
-#Various paths are defined here - please uncomment them and change them, if desired
+#Please uncomment and change the various paths that are defined here for the script to work
 #OPENROAD_PATH = ~/openROAD
 #MAGIC_PATH = ~/magic
 #SKY130_PATH = ~/SKY130
