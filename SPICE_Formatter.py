@@ -57,8 +57,6 @@ for i in range(len(spf_lines)):
     else:
         plus_streak = False
 
-print(ports)
-
 #Next, we need to figure out whether the ports are input or output ports
 input_ports = []
 output_ports = []
@@ -135,7 +133,7 @@ for i in range(len(usf_lines)):
     #This code changes the module instantiation such that it has the correct ports and name
     if "X0" in usf_lines[i]:
         usf_lines[i] = "X0 "
-        for j in range(len(ports)): usf_lines[i] += ports[j] + " "
+        for j in range(len(ports)): usf_lines[i] += ports[j].replace("[", ".").replace("]", "") + " "
         usf_lines[i] += design_name + "\n"
 
     #This code will insert inputs as the user desires.
@@ -183,14 +181,27 @@ for i in range(len(usf_lines)):
 
     #This code makes sure that the power is measured properly
     if "meas tran AVG_POWER" in usf_lines[i]:
-        usf_lines[i] = "    meas tran AVG_POWER AVG LOW_POWER_VECTOR from=1ns to=" + str(sim_time - 1) + "ns\n"
+        usf_lines[i] = "    meas tran AVG_POWER AVG POWER_VECTOR from=1ns to=" + str(sim_time - 1) + "ns\n"
 
     #Finally, we will ask the user to plot some variables
     if "plot" in usf_lines[i]:
+        plotted_ports = []
+        
+        if has_clock:
+            #First, ask the user if they wish to plot the clock
+            x = smart_input('Please enter whether you wish to plot the clock (Y/N): ')
+            if (x == 'Y'): plotted_ports.append(clock)
+
+            #Next, ask the user if they wish to plot the restet
+            x = smart_input('Please enter whether you wish to plot the reset (Y/N): ')
+            if (x == 'Y'): plotted_ports.append(reset)
+
+        #Format the list of output signals
+        for i in range(len(output_ports)): output_ports[i] = output_ports[i].replace("[", ".").replace("]", "")
+
         num_vars = smart_intput_number('Please enter the number of output signals that you wish to plot: ')
         while num_vars > len(output_ports): num_vars = smart_intput_number('The total number of output signals is ' + str(len(output_ports)) + '. Please enter a lower number: ')
 
-        plotted_ports = []
         for i in range(num_vars):
             print("Please enter signal " + str(i) + " that you wish to plot: ", end = "")
             x = input()
