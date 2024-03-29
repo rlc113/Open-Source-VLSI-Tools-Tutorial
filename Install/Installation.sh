@@ -1,10 +1,20 @@
+#PLEASE NOTE: This script should be ran with "sudo" for proper installation.
+
 #Install needed packages first
-sudo apt install -y git python3 ngspice tk-dev libcairo2-dev mesa-common-dev
+apt install -y git python3 ngspice tk-dev libcairo2-dev mesa-common-dev
 
 #Please uncomment and change the various paths that are defined here for the script to work
+
+#OpenROAD-flow-scripts installation path
 #OPENROAD_PATH = ~/openROAD
+
+#Magic VLSI installation path
 #MAGIC_PATH = ~/magic
+
+#SKY130 PDK installation path
 #SKY130_PATH = ~/SKY130
+
+#Netgen installation path
 #NETGEN_PATH = ~/netgen
 
 #Install openROAD-flow-scripts
