@@ -8,14 +8,10 @@ export PDN_TCL		 = ./designs/$(PLATFORM)/$(DESIGN_NICKNAME)/pdn.tcl
 
 export PLACE_PINS_ARGS = -min_distance 4 -min_distance_in_tracks
 
-#export CORE_UTILIZATION = 20
-#export CORE_ASPECT_RATIO = 1
-#export CORE_MARGIN = 2
-
-export DIE_AREA   = 0 0 80 80
-export CORE_AREA  = 20 20 60 60
+export CORE_UTILIZATION = 20
+export CORE_ASPECT_RATIO = 1
+export CORE_MARGIN = 2
 
 export PLACE_DENSITY = 1
 export TNS_END_PERCENT = 100
-
 
