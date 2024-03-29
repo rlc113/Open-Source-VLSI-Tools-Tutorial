@@ -3,7 +3,7 @@
 #Install needed packages first
 apt install -y git python3 ngspice tk-dev libcairo2-dev mesa-common-dev
 
-#Please uncomment and change the various paths that are defined here for the script to work
+#Please uncomment and change the various paths that are defined here for the script to work - note that these directories must already exist for the installation to function properly
 
 #OpenROAD-flow-scripts installation path
 #OPENROAD_PATH = ~/openROAD
