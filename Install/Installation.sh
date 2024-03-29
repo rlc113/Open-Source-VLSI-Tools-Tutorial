@@ -6,16 +6,16 @@ apt install -y git python3 ngspice tk-dev libcairo2-dev mesa-common-dev
 #Please uncomment and change the various paths that are defined here for the script to work - note that these directories must already exist for the installation to function properly
 
 #OpenROAD-flow-scripts installation path
-#OPENROAD_PATH = ~/openROAD
+#OPENROAD_PATH=~/openROAD
 
 #Magic VLSI installation path
-#MAGIC_PATH = ~/magic
+#MAGIC_PATH=~/magic
 
 #SKY130 PDK installation path
-#SKY130_PATH = ~/SKY130
+#SKY130_PATH=~/SKY130
 
 #Netgen installation path
-#NETGEN_PATH = ~/netgen
+#NETGEN_PATH=~/netgen
 
 #Install openROAD-flow-scripts
 cd $OPENROAD_PATH
