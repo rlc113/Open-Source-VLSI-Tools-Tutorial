@@ -8,7 +8,7 @@ load counter
 extract
 
 # Configure the ext2spice command for LVS
-ext2soice LVS
+ext2spice LVS
 
 # Extract the module to a SPICE file
 ext2spice counter
