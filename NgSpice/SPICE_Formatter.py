@@ -28,7 +28,7 @@ def smart_intput_number(prompt):
         except ValueError:
             print("Your response was not an integer number. Please enter a postive integer number: ", end = "")
 
-unmodified_sim_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/CDC_PEX_1_Test.cir"
+unmodified_sim_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/template.cir"
 modified_sim_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/out.cir"
 SPICE_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/design_flatten.spice"
 verilog_file = "/home/tutorial/openroad_script_files/OpenROAD-flow-scripts/flow/results/sky130hd/counter/base/PEX/6_final.v"
