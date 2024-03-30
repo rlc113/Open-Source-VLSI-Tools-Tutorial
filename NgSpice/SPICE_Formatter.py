@@ -203,7 +203,7 @@ for i in range(len(usf_lines)):
         while num_vars > len(output_ports): num_vars = smart_intput_number('The total number of output signals is ' + str(len(output_ports)) + '. Please enter a lower number: ')
 
         for i in range(num_vars):
-            print("Please enter signal " + str(i) + " that you wish to plot: ", end = "")
+            print("Please enter signal " + str(i + 1) + " that you wish to plot: ", end = "")
             x = input()
             
             while x not in output_ports:
