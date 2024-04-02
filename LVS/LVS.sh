@@ -1,5 +1,3 @@
-echo "Hello"
-
 #Please uncomment and change the various paths that are defined here for the script to work
 
 #This is the path to the results folder - make sure the final / is there
